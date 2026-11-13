@@ -61,9 +61,33 @@ let selectedPortions = basePortions;
 <button id="plusPortion" class="portion-btn">+</button>
 </div>
 </div>
+<button id="addIngredients" class="add-list-btn">
+    🛒 Legg ingrediensene i handlelisten
+</button>
 <div id="recipeBody">${p.content}</div>
-</div>`;
-  $("#toggleFav").onclick=()=>{favs.has(p.id)?favs.delete(p.id):favs.add(p.id);localStorage.setItem("nd-favorites",JSON.stringify([...favs]));$("#toggleFav").textContent=favs.has(p.id)?"♥ Lagret":"♡ Favoritt"};
+</div>`;  $("#toggleFav").onclick=()=>{favs.has(p.id)?favs.delete(p.id):favs.add(p.id);localStorage.setItem("nd-favorites",JSON.stringify([...favs]));$("#toggleFav").textContent=favs.has(p.id)?"♥ Lagret":"♡ Favoritt"};
+$("#addIngredients").onclick = () => {
+    const ingredients = [...$("#recipeBody").querySelectorAll("li")];
+
+const skip = /\b(vann|salt|pepper|olje)\b|smør/i;
+    ingredients.forEach(item => {
+        const name = item.textContent.trim();
+
+if (!name || skip.test(name) || /[.!?]$/.test(name)) return;
+        const exists = list.some(
+            entry => entry.name.toLowerCase() === name.toLowerCase()
+        );
+
+        if (!exists) {
+            list.push({ name, done: false });
+        }
+    });
+
+    saveList();
+    renderList();
+
+    alert("Ingrediensene er lagt til i handlelisten!");
+};
   $("#minusPortion").onclick=()=>{
     if(selectedPortions>1){
         selectedPortions--;

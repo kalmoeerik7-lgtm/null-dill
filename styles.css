@@ -46,4 +46,20 @@
     font-size: 25px;
     font-weight: bold;
     cursor: pointer;
+}.add-list-btn {
+    background: #ff8a00;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 10px 0 20px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.add-list-btn:hover {
+    background: #ff9d26;
+    transform: translateY(-1px);
 }
