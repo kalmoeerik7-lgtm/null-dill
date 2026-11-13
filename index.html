@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#171717">
+  <meta name="description" content="NULL DILL – God mat. Lite styr! Enkle oppskrifter for hele familien.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>NULL DILL – God mat. Lite styr!</title>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="mark">ND</span><div><strong>NULL DILL</strong><small>GOD MAT. LITE STYR!</small></div></div>
+    <button id="menuBtn" class="icon-btn" aria-label="Åpne meny">☰</button>
+  </header>
+  <nav id="nav" class="nav hidden">
+    <button data-view="home">Oppskrifter</button><button data-view="favorites">Favoritter</button><button data-view="list">Handleliste</button>
+    <a href="https://nulldill.blogspot.com/" target="_blank" rel="noopener">Besøk bloggen ↗</a>
+  </nav>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">ENKEL HVERDAGSMAT</p>
+      <h1>God mat.<br><em>Lite styr!</em></h1>
+      <p>Null dill. Bare skikkelig god mat.</p>
+      <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Hva har du lyst på?"></label>
+    </section>
+    <section class="toolbar">
+      <div><h2 id="sectionTitle">Siste oppskrifter</h2><p id="status" class="muted">Henter fra bloggen …</p></div>
+      <select id="category" aria-label="Velg kategori"><option value="">Alle kategorier</option></select>
+    </section>
+    <section id="recipes" class="recipes"><div class="loading">Laster oppskrifter …</div></section>
+    <section id="favoritesView" class="hidden"></section>
+    <section id="listView" class="hidden">
+      <div class="list-head"><h2>Handleliste</h2><button id="clearList" class="text-btn">Tøm lista</button></div>
+      <form id="addItem"><input id="newItem" placeholder="Legg til en vare …" autocomplete="off"><button>Legg til</button></form>
+      <ul id="shoppingList" class="shopping-list"></ul>
+      <p class="muted">Handlelisten lagres på denne enheten.</p>
+    </section>
+  </main>
+  <footer><span>NULL DILL</span><span>God mat. Lite styr!</span><a href="https://nulldill.blogspot.com/">nulldill.blogspot.com</a></footer>
+  <dialog id="recipeDialog"><button class="close" id="closeDialog" aria-label="Lukk">×</button><div id="recipeContent"></div></dialog>
+  <script src="app.js"></script>
+</body>
+</html>

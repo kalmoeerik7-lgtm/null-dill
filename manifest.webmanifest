@@ -1,0 +1,10 @@
+{
+  "name": "NULL DILL – God mat. Lite styr!",
+  "short_name": "NULL DILL",
+  "description": "Enkle oppskrifter for hele familien.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#171717",
+  "theme_color": "#171717",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
