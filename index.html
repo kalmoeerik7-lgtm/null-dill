@@ -17,13 +17,12 @@
   </header>
   <nav id="nav" class="nav hidden">
     <button data-view="home">Oppskrifter</button><button data-view="favorites">Favoritter</button><button data-view="list">Handleliste</button>
-    <a href="https://nulldill.blogspot.com/" target="_blank" rel="noopener">Besøk bloggen ↗</a>
   </nav>
   <main>
     <section class="hero">
-      <p class="eyebrow">ENKEL HVERDAGSMAT</p>
-      <h1>God mat.<br><em>Lite styr!</em></h1>
-      <p>Null dill. Bare skikkelig god mat.</p>
+   <div class="hero-heading">
+    <img src="logo.png.png" alt="NULL DILL – God mat. Lite styr!" class="hero-logo">
+</div>
       <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Hva har du lyst på?"></label>
     </section>
     <section class="toolbar">
@@ -39,7 +38,7 @@
       <p class="muted">Handlelisten lagres på denne enheten.</p>
     </section>
   </main>
-  <footer><span>NULL DILL</span><span>God mat. Lite styr!</span><a href="https://nulldill.blogspot.com/">nulldill.blogspot.com</a></footer>
+  <footer><span>NULL DILL</span><span>God mat. Lite styr!</span></footer>
   <dialog id="recipeDialog"><button class="close" id="closeDialog" aria-label="Lukk">×</button><div id="recipeContent"></div></dialog>
   <script src="app.js"></script>
 </body>

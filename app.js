@@ -45,9 +45,61 @@ function render(){
 }
 function openRecipe(p){
   if(!p)return;
-  $("#recipeContent").innerHTML=`<div class="dialog-body"><button class="fav-btn" id="toggleFav">${favs.has(p.id)?"♥ Lagret":"♡ Favoritt"}</button><span class="tag">${escapeHtml(p.labels.join(" · ")||"Oppskrift")}</span><h2>${escapeHtml(p.title)}</h2><div>${p.content}</div><p><a href="${escapeHtml(p.url)}" target="_blank" rel="noopener">Se originalinnlegget på bloggen ↗</a></p></div>`;
+  const recipeText = new DOMParser().parseFromString(p.content, "text/html").body.textContent;
+const portionMatch = recipeText.match(/PORSJONER:\s*(\d+)/i);
+const basePortions = portionMatch ? Number(portionMatch[1]) : 4;
+let selectedPortions = basePortions;
+  $("#recipeContent").innerHTML=`<div class="dialog-body">
+<button class="fav-btn" id="toggleFav">${favs.has(p.id)?"♥ Lagret":"♡ Favoritt"}</button>
+<span class="tag">${escapeHtml(p.labels.join(" · ")||"Oppskrift")}</span>
+<h2>${escapeHtml(p.title)}</h2>
+<div class="portion-picker">
+<strong>Porsjoner</strong>
+<div class="portion-controls">
+<button id="minusPortion" class="portion-btn">−</button>
+<span id="portionCount">${selectedPortions}</span>
+<button id="plusPortion" class="portion-btn">+</button>
+</div>
+</div>
+<div id="recipeBody">${p.content}</div>
+</div>`;
   $("#toggleFav").onclick=()=>{favs.has(p.id)?favs.delete(p.id):favs.add(p.id);localStorage.setItem("nd-favorites",JSON.stringify([...favs]));$("#toggleFav").textContent=favs.has(p.id)?"♥ Lagret":"♡ Favoritt"};
+  $("#minusPortion").onclick=()=>{
+    if(selectedPortions>1){
+        selectedPortions--;
+        updatePortions(selectedPortions, basePortions);
+    }
+};
+
+$("#plusPortion").onclick=()=>{
+    if(selectedPortions<20){
+        selectedPortions++;
+       updatePortions(selectedPortions, basePortions);
+    }
+};
+updatePortions(selectedPortions, basePortions);
   $("#recipeDialog").showModal();
+}
+function updatePortions(selectedPortions, basePortions){
+    $("#portionCount").textContent = selectedPortions;
+
+    const factor = selectedPortions / basePortions;
+
+    const recipeBody = $("#recipeBody");
+    const items = recipeBody.querySelectorAll("li");
+
+    items.forEach(item => {
+        const original = item.dataset.original || item.textContent;
+        item.dataset.original = original;
+
+        item.textContent = original.replace(
+            /(\d+(?:[.,]\d+)?)\s*(g|kg|dl|cl|ml|ss|ts)\b/gi,
+            (match, amount, unit) => {
+                const result = Number(amount.replace(",", ".")) * factor;
+                return `${Number(result.toFixed(2))} ${unit}`;
+            }
+        );
+    });
 }
 function setView(v){
   view=v;$("#recipes").classList.toggle("hidden",v!=="home");$("#favoritesView").classList.toggle("hidden",v!=="favorites");$("#listView").classList.toggle("hidden",v!=="list");
