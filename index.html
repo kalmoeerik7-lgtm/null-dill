@@ -41,5 +41,29 @@
   <footer><span>NULL DILL</span><span>God mat. Lite styr!</span></footer>
   <dialog id="recipeDialog"><button class="close" id="closeDialog" aria-label="Lukk">×</button><div id="recipeContent"></div></dialog>
   <script src="app.js"></script>
+  <script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js")
+        .then(registration => {
+            
+
+            registration.addEventListener("updatefound", () => {
+const newWorker = registration.installing;
+
+if (!newWorker) return;
+
+newWorker.addEventListener("statechange", () => {
+                    if (
+                        newWorker.state === "activated" &&
+                        navigator.serviceWorker.controller
+                    ) {
+                        window.location.reload();
+                    }
+                });
+            });
+            registration.update();
+            }).catch(error => console.error("Service worker-feil:", error));
+}
+</script>
 </body>
 </html>

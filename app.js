@@ -116,4 +116,3 @@ $("#closeDialog").onclick=()=>$("#recipeDialog").close();
 $("#addItem").onsubmit=e=>{e.preventDefault();const v=$("#newItem").value.trim();if(v){list.push({name:v,done:false});$("#newItem").value="";saveList()}};
 $("#clearList").onclick=()=>{list=[];saveList()};
 renderList();load();
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
