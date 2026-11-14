@@ -1,4 +1,4 @@
-const CACHE = "null-dill-shell-v5";
+const CACHE = "null-dill-shell-v6";
 
 const SHELL = [
     "./",

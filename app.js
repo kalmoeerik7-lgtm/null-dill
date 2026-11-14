@@ -74,14 +74,37 @@ const skip = /\b(vann|salt|pepper|olje)\b|smør/i;
         const name = item.textContent.trim();
 
 if (!name || skip.test(name) || /[.!?]$/.test(name)) return;
-        const exists = list.some(
-            entry => entry.name.toLowerCase() === name.toLowerCase()
-        );
+const match = name.match(/^([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
 
-        if (!exists) {
-            list.push({ name, done: false });
-        }
+if (match) {
+    const amount = Number(match[1].replace(",", "."));
+    const unit = match[2].toLowerCase();
+    const ingredient = match[3].trim().toLowerCase();
+
+    const existing = list.find(entry => {
+        const old = entry.name.match(/^([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
+
+        return old &&
+            old[2].toLowerCase() === unit &&
+            old[3].trim().toLowerCase() === ingredient;
     });
+
+    if (existing) {
+        const old = existing.name.match(/^([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
+        const total = Number(old[1].replace(",", ".")) + amount;
+        existing.name = `${Number(total.toFixed(2))} ${unit} ${match[3].trim()}`;
+    } else {
+        list.push({ name, done: false });
+    }
+} else {
+    const exists = list.some(
+        entry => entry.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (!exists) {
+        list.push({ name, done: false });
+    }
+}    });
 
     saveList();
     renderList();
