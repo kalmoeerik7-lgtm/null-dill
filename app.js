@@ -66,45 +66,50 @@ let selectedPortions = basePortions;
 </button>
 <div id="recipeBody">${p.content}</div>
 </div>`;  $("#toggleFav").onclick=()=>{favs.has(p.id)?favs.delete(p.id):favs.add(p.id);localStorage.setItem("nd-favorites",JSON.stringify([...favs]));$("#toggleFav").textContent=favs.has(p.id)?"♥ Lagret":"♡ Favoritt"};
+
 $("#addIngredients").onclick = () => {
     const ingredients = [...$("#recipeBody").querySelectorAll("li")];
 
-const skip = /\b(vann|salt|pepper|olje)\b|smør/i;
+    const skip = /\b(vann|salt|pepper|olje)\b|smør/i;
+
     ingredients.forEach(item => {
         const name = item.textContent.trim();
 
-if (!name || skip.test(name) || /[.!?]$/.test(name)) return;
-const match = name.match(/^([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
+        if (!name || skip.test(name) || /[.!?]$/.test(name)) return;
 
-if (match) {
-    const amount = Number(match[1].replace(",", "."));
-    const unit = match[2].toLowerCase();
-    const ingredient = match[3].trim().toLowerCase();
+        const match = name.match(/^(?:ca\.?\s*)?([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
 
-    const existing = list.find(entry => {
-        const old = entry.name.match(/^([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
+        if (match) {
+            const amount = Number(match[1].replace(",", "."));
+            const unit = match[2].toLowerCase();
+            const ingredient = match[3].trim().toLowerCase();
 
-        return old &&
-            old[2].toLowerCase() === unit &&
-            old[3].trim().toLowerCase() === ingredient;
+            const existing = list.find(entry => {
+                const old = entry.name.match(/^(?:ca\.?\s*)?([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
+
+                return old &&
+                    old[2].toLowerCase() === unit &&
+                    old[3].trim().toLowerCase() === ingredient;
+            });
+
+            if (existing) {
+                const old = existing.name.match(/^(?:ca\.?\s*)?([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
+                const total = Number(old[1].replace(",", ".")) + amount;
+
+                existing.name = `${Number(total.toFixed(2))} ${unit} ${match[3].trim()}`;
+            } else {
+                list.push({ name, done: false });
+            }
+        } else {
+            const exists = list.some(
+                entry => entry.name.toLowerCase() === name.toLowerCase()
+            );
+
+            if (!exists) {
+                list.push({ name, done: false });
+            }
+        }
     });
-
-    if (existing) {
-        const old = existing.name.match(/^([\d.,]+)\s*(g|dl|ss|ts)\s+(.+)$/i);
-        const total = Number(old[1].replace(",", ".")) + amount;
-        existing.name = `${Number(total.toFixed(2))} ${unit} ${match[3].trim()}`;
-    } else {
-        list.push({ name, done: false });
-    }
-} else {
-    const exists = list.some(
-        entry => entry.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (!exists) {
-        list.push({ name, done: false });
-    }
-}    });
 
     saveList();
     renderList();
